@@ -9,6 +9,7 @@ const Breadcrum = (props) => {
     return (
         
         <div className="breadcrum">
+            
             Home <img src={arrow_icon} alt=''></img>Shop<img src={arrow_icon} alt=''></img>{product.category} <img src={arrow_icon} alt=''></img>{product.name}
         </div>
       
