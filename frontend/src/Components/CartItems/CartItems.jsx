@@ -2,10 +2,47 @@ import { useContext } from 'react';
 import './CartItems.css'
 import { ShopContext } from '../../Context/ShopContext';
 import remove_icon from '../Assets/cart_cross_icon.png';
+import axios from 'axios';
 
 const CartItems = () => {
 
+
+
+
     const {getTotalCartAmount,all_product,cartItems,removeFromCart} = useContext(ShopContext);
+    var totalProducts = {
+        nome : "Yuri",
+        id: 7,
+        price: 85.5
+
+    }
+    //var jsonString = JSON.stringify(totalProducts);
+
+    function checkout() {
+        fetch('http://localhost:8080/produtos/list1', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Acess-Control-Allow-Origin': 'http://localhost:5173',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                totalProducts
+            )
+        })
+            .then(response => {
+                if(response.status === 200){
+                    return response.json();
+                } else {
+                throw Error('erro!!');
+                }
+            })
+        // axios({
+        //     method: 'post',
+        //     url: 'http://localhost:8080/produtos/list1',
+        //     data: totalProducts,
+        //   });
+    }
 
     return (
         <div className="cartitems">
@@ -20,7 +57,12 @@ const CartItems = () => {
             <hr /> 
             {all_product.map((e)=>{
                 if(cartItems[e.id]>0) 
-                     {                 
+                     {   
+                        //{totalProducts.name = e.name}
+                      //  {totalProducts.id = e.id}
+                      //  {totalProducts.price = e.new_price}
+                    
+
                         return <div>                   
                                  <div className='cartitems-format           cartitems-format-main'>
                                     <img src={e.image} alt='' className='carticon-product-icon'/>
@@ -35,8 +77,12 @@ const CartItems = () => {
                     </div>
                 }
 
+                
                 return null;
             })}
+            
+            {console.log(totalProducts)}
+            
 
             <div className='cartitems-down'>
                 <div className='cartitems-total'>
@@ -58,7 +104,7 @@ const CartItems = () => {
                             <h3>${getTotalCartAmount()}</h3>
                         </div>
                     </div>
-                    <button>proceed to checkout</button>
+                    <button onClick={checkout()}>proceed to checkout</button>
                 </div>
 
                 <div className='cartitems-promocode'>
@@ -70,10 +116,17 @@ const CartItems = () => {
                 </div>
             </div>
 
+            {console.log(JSON.stringify(totalProducts))}
 
+            
 
         </div>
+    
+    //{jsonString = JSON.stringify(totalProducts)}
+     
     )
+
+            
 }
 
 export default CartItems;
